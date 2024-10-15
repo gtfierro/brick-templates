@@ -13,7 +13,7 @@ author = 'Gabe Fierro'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.graphviz"]
+extensions = ["sphinx.ext.graphviz", "sphinx_toolbox.collapse"]
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -23,5 +23,5 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'traditional'
+html_theme = 'bizstyle'
 html_static_path = ['_static']

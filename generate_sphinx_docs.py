@@ -18,7 +18,7 @@ def build_dependencies_string(template):
             dependencies += f"- :doc:`{dep.template.name}`\n"
     return dependencies
 
-def build_graphviz(g: rdflib.Graph):
+def build_graphviz(g: rdflib.Graph, indent=1):
     # create a graphviz representation of the graph
     from rdflib.tools.rdf2dot import rdf2dot
     import pydot
@@ -27,13 +27,8 @@ def build_graphviz(g: rdflib.Graph):
     rdf2dot(g, buf)
     dot = pydot.graph_from_dot_data(buf.getvalue())
     # put tab before each line in dot[0]
-    dot = "\n".join(f"    {line}" for line in dot[0].to_string().split("\n"))
-    sphinx_string = f"""
-.. graphviz::
-
-    {dot}
-    """
-    return sphinx_string
+    dot = "\n".join(f"{' '*4*indent}{line}" for line in dot[0].to_string().split("\n"))
+    return dot
 
 # Initialize BuildingMOTIF
 bm = BuildingMOTIF("sqlite://")
@@ -54,12 +49,12 @@ rst_template = """
 
 {turtle}
 
-{graphviz}
-
 Parameters
 ----------
 
 {parameters}
+
+{graphviz}
 
 Dependencies
 ------------
@@ -77,7 +72,7 @@ for templ in lib.get_templates():
     parameters = "\n".join(f"- {param}" for param in templ.parameters)
 
     dependencies = build_dependencies_string(templ)
-    padding = "-" * len(name)
+    padding = "#" * len(name)
     
     serialized_body = templ.body.serialize(format="turtle")
     # add a tab to each line
@@ -89,7 +84,20 @@ for templ in lib.get_templates():
 {serialized_body}
     """
 
-    graphviz = build_graphviz(templ.inline_dependencies().body)
+    graphviz_simple = build_graphviz(templ.body)
+    graphviz_expanded = build_graphviz(templ.inline_dependencies().body, indent=2)
+
+    graphviz = f"""
+.. graphviz::
+
+    {graphviz_simple}
+
+.. collapse:: Template With Inline Dependencies
+    
+    .. graphviz::
+    
+    {graphviz_expanded}
+    """
 
     # Create the .rst content
     rst_content = rst_template.format(name=name, padding=padding, turtle=turtle, graphviz=graphviz, parameters=parameters, dependencies=dependencies)
@@ -97,10 +105,10 @@ for templ in lib.get_templates():
     # Write to a .rst file
     with open(os.path.join(output_dir, f"{name}.rst"), "w") as f:
         f.write(rst_content)
-# Create index.rst content
-index_content = """.. toctree::
+
+index_content = """
+.. toctree::
    :maxdepth: 1
-   :caption: Template Documentation
 
 """
 
