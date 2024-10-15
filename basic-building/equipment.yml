@@ -9,10 +9,10 @@ thermostat:
   dependencies:
     - template: hvac-zone
       args: {"name": "zone"}
-    - template: https://brickschema.org/schema/Brick#Zone_Air_Temperature_Setpoint
+    - template: https://brickschema.org/schema/Brick#Air_Temperature_Setpoint
       library: https://brickschema.org/schema/1.4/Brick
       args: {"name": "sp"}
-    - template: https://brickschema.org/schema/Brick#Zone_Air_Temperature_Sensor
+    - template: https://brickschema.org/schema/Brick#Air_Temperature_Sensor
       library: https://brickschema.org/schema/1.4/Brick
       args: {"name": "sen"}
     - template: https://brickschema.org/schema/Brick#Occupancy_Sensor
@@ -31,7 +31,7 @@ vav:
     @prefix brick: <https://brickschema.org/schema/Brick#> .
     P:name a brick:Variable_Air_Volume_Box ;
       brick:feeds P:zone ;
-      brick:hasPoint P:supply_air_flow, P:supply_air_temp, P:supply_air_temp_sp,
+      brick:hasPoint P:supply_air_flow, P:supply_air_temp, P:supply_air_temp_sp ;
       brick:hasPart P:damper ;
     .
   dependencies:
@@ -67,7 +67,7 @@ supply-damper:
     @prefix P: <urn:___param___#> .
     @prefix brick: <https://brickschema.org/schema/Brick#> .
     P:name a brick:Supply_Damper ;
-      brick:hasPoint P:position .
+      brick:hasPoint P:position ;
     .
   dependencies:
     - template: https://brickschema.org/schema/Brick#Damper_Position_Command
@@ -79,7 +79,7 @@ heating-coil:
     @prefix P: <urn:___param___#> .
     @prefix brick: <https://brickschema.org/schema/Brick#> .
     P:name a brick:Heating_Coil ;
-      brick:hasPart P:valve_command .
+      brick:hasPart P:valve_command ;
     .
   dependencies:
     - template: https://brickschema.org/schema/Brick#Valve_Command

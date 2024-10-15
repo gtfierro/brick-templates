@@ -3,7 +3,7 @@ hvac-zone:
     @prefix P: <urn:___param___#> .
     @prefix brick: <https://brickschema.org/schema/Brick#> .
     P:name a brick:HVAC_Zone ;
-      brick:area P:area .
+      brick:area P:area ;
     .
   optional: ["area"]
   dependencies:
