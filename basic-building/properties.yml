@@ -1,0 +1,10 @@
+floor-area:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix brick: <https://brickschema.org/schema/Brick#> .
+    @prefix unit: <http://qudt.org/vocab/unit#> .
+    P:area
+      brick:hasValue P:value ;
+      brick:hasUnit unit:FT2 .
+    .
+

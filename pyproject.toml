@@ -1,0 +1,12 @@
+[project]
+name = "bmotif-library"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "buildingmotif[topquadrant]",
+]
+
+[tool.uv.sources]
+buildingmotif = { git = "https://github.com/NREL/buildingmotif.git", rev = "develop" }

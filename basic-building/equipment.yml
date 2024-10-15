@@ -1,0 +1,87 @@
+thermostat:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix brick: <https://brickschema.org/schema/Brick#> .
+    P:name a brick:Thermostat_Equipment ;
+      brick:hasLocation P:zone ;
+      brick:hasPoint P:sp, P:sen, P:occ, P:status, P:command .
+  optional: ['occ']
+  dependencies:
+    - template: hvac-zone
+      args: {"name": "zone"}
+    - template: https://brickschema.org/schema/Brick#Zone_Air_Temperature_Setpoint
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "sp"}
+    - template: https://brickschema.org/schema/Brick#Zone_Air_Temperature_Sensor
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "sen"}
+    - template: https://brickschema.org/schema/Brick#Occupancy_Sensor
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "occ"}
+    - template: https://brickschema.org/schema/Brick#Mode_Status
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "status"}
+    - template: https://brickschema.org/schema/Brick#Mode_Command
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "command"}
+
+vav:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix brick: <https://brickschema.org/schema/Brick#> .
+    P:name a brick:Variable_Air_Volume_Box ;
+      brick:feeds P:zone ;
+      brick:hasPoint P:supply_air_flow, P:supply_air_temp, P:supply_air_temp_sp,
+      brick:hasPart P:damper ;
+    .
+  dependencies:
+    - template: hvac-zone
+      args: {"name": "zone"}
+    - template: https://brickschema.org/schema/Brick#Supply_Air_Flow_Sensor
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "supply_air_flow"}
+    - template: https://brickschema.org/schema/Brick#Supply_Air_Temperature_Sensor
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "supply_air_temp"}
+    - template: https://brickschema.org/schema/Brick#Supply_Air_Temperature_Setpoint
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "supply_air_temp_sp"}
+    - template: supply-damper
+      args: {"name": "damper"}
+
+rvav:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix brick: <https://brickschema.org/schema/Brick#> .
+    P:name a brick:Variable_Air_Volume_Box_With_Reheat ;
+      brick:hasPart P:heating_coil ;
+    .
+  dependencies:
+    - template: vav
+      args: {"name": "name"}
+    - template: heating-coil
+      args: {"name": "heating_coil"}
+
+supply-damper:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix brick: <https://brickschema.org/schema/Brick#> .
+    P:name a brick:Supply_Damper ;
+      brick:hasPoint P:position .
+    .
+  dependencies:
+    - template: https://brickschema.org/schema/Brick#Damper_Position_Command
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "position"}
+
+heating-coil:
+  body: >
+    @prefix P: <urn:___param___#> .
+    @prefix brick: <https://brickschema.org/schema/Brick#> .
+    P:name a brick:Heating_Coil ;
+      brick:hasPart P:valve_command .
+    .
+  dependencies:
+    - template: https://brickschema.org/schema/Brick#Valve_Command
+      library: https://brickschema.org/schema/1.4/Brick
+      args: {"name": "valve_command"}
