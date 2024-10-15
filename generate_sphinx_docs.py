@@ -30,11 +30,15 @@ Dependencies
 {dependencies}
 """
 
+# List to store template names for index.rst
+template_names = []
+
 # Generate .rst files for each template
 for templ in lib.get_templates():
     name = templ.name
+    template_names.append(name)
     parameters = "\n".join(f"- {param}" for param in templ.parameters)
-    dependencies = "\n".join(f"- {dep.template.name}" for dep in templ.get_dependencies())
+    dependencies = "\n".join(f"- :doc:`{dep.template.name}`" for dep in templ.get_dependencies())
     padding = "-" * len(name)
 
     # Create the .rst content
@@ -43,3 +47,15 @@ for templ in lib.get_templates():
     # Write to a .rst file
     with open(os.path.join(output_dir, f"{name}.rst"), "w") as f:
         f.write(rst_content)
+# Create index.rst content
+index_content = """.. toctree::
+   :maxdepth: 2
+   :caption: Template Documentation
+
+"""
+
+index_content += "\n".join(f"   {name}" for name in template_names)
+
+# Write the index.rst file
+with open(os.path.join(output_dir, "index.rst"), "w") as f:
+    f.write(index_content)
