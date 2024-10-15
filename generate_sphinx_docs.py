@@ -33,10 +33,10 @@ def build_graphviz(g: rdflib.Graph, indent=1):
 # Initialize BuildingMOTIF
 bm = BuildingMOTIF("sqlite://")
 
-brick = Library.load(ontology_graph="https://brickschema.org/schema/1.4/Brick.ttl")
+brick = Library.load(ontology_graph="https://brickschema.org/schema/1.4/Brick.ttl", infer_templates=True, run_shacl_inference=False)
 
 # Load the library
-lib = Library.load(directory="basic-building")
+lib = Library.load(directory="basic-building", infer_templates=False, run_shacl_inference=False)
 
 # Directory to store the generated .rst files
 output_dir = "source"
