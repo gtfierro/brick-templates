@@ -49,6 +49,7 @@ for templ in lib.get_templates():
         f.write(rst_content)
 # Create index.rst content
 index_content = """.. toctree::
+   :glob:
    :maxdepth: 2
    :caption: Template Documentation
 
